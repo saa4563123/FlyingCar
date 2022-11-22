@@ -36,7 +36,7 @@ const int FrontCorrectionFactor = 0;
 const int BackCorrectionFactor = 0; //<~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~수정필요
 
 /* 좌우 균형 조절 */
-const int BalanceVal = 5;
+int BalanceVal = 5;
 
 /* 날개 서보 세팅 변수 */
 const int FoldingRadL = 0; // 기본값
@@ -144,9 +144,9 @@ void loop() {
     }
 
     /* 모터값 입력 */
-    DronMoter1.write(SpeedVal + FrontCorrectionFactor + BalanceVal);
+    DronMoter1.write(SpeedVal + FrontCorrectionFactor);
     DronMoter2.write(SpeedVal + FrontCorrectionFactor);
-    DronMoter3.write(SpeedVal + BackCorrectionFactor + BalanceVal);
+    DronMoter3.write(SpeedVal + BackCorrectionFactor);
     DronMoter4.write(SpeedVal + BackCorrectionFactor);
 
     /* 날개 서보 입력 */
@@ -173,6 +173,22 @@ void loop() {
 
     if (temp == 'x') {
       SetVal = 35;
+    }
+
+    /* 드론 모터 미세 제어 */
+    if (temp == 'q') {
+      SetVal += 1;
+    }
+    else if (temp == 'e') {
+      SetVal -= 1;
+    }
+
+    /* 드론 변수 제어 */
+    if (temp == 'm') {
+      BalanceVal += 1;
+    }
+    else if (temp == 'n') {
+      BalanceVal -= 1;
     }
 
     /* 날개 제어 */
@@ -215,8 +231,8 @@ void loop() {
     /* 모터값 입력 */
     DronMoter1.write(SpeedVal + FrontCorrectionFactor);
     DronMoter2.write(SpeedVal + FrontCorrectionFactor);
-    DronMoter3.write(SpeedVal + BackCorrectionFactor);
-    DronMoter4.write(SpeedVal + BackCorrectionFactor);
+    DronMoter3.write(SpeedVal + BackCorrectionFactor + BalanceVal);
+    DronMoter4.write(SpeedVal + BackCorrectionFactor + BalanceVal);
 
     /* 날개 서보 입력 */
     WingL.write(WingLVal);
